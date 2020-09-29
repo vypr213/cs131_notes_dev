@@ -8,15 +8,14 @@ order: 4 # Lecture number for 2020
 
 # 4.1 - Edge Detection
 
-Edges are important features for image analysis. We can think of edges as significant local changes in an image, which happen at the boundary between two different regions of the image. The use of edge detection in computer vision is inspired by studies in neurobiology that found that the mammalian brain responds especially strongly to the stimuli presented by images of some line configurations.
+Edges are important features for image analysis. We can think of edges as significant local changes in an image, which happen at the boundary between two different regions of the image. Historically, a common way to represent edges is through lines and line drawings since they provide a way of communication and contour expression. Lines and edges convey meaning about scenes and edges, a fact that is supported by studies in neurobiology that found that the mammalian brain responds especially strongly to the stimuli presented by images of some line configurations.
 
 <div class="fig figcenter">
   <img alt="Hubel & Wiesel experimental design" src="https://i.imgur.com/Bnoh8LL.jpg">
 </div>
 *Hubel & Wiesel, 1960s*
 
-Further studies have revealed that human brains interact similarly with edges. Further, from human perception studies in psychology, we know that not all edges are equally important in terms of communicating meaning; some edges are more significant than others. This sets the foundation for the challenge of edge detection in Computer Vision.
-
+Further studies have revealed that human brains interact similarly with edges. Further, from human perception studies in psychology, we know that not all edges are equally important in terms of communicating meaning; some edges are more significant than others. These studies have inspired the use of edge detection in Computer Vision. By detecting edges, we hope that we can recover information regarding objects in the image as well as the geometry and viewpoint of the scene. 
 
 ## The End Goal
 The goal of edge detection in computer vision is to identify sudden changes (discontinuities) in an image. In general, the ideal functionality of an edge detector is to convert any photo input into a line drawing -- ideally, what a human artist would draw to represent the input. In the case of the human artist, the creation of this drawing requires the use of external knowledge and inference about the depicted object in order to either _add_ lines that are not present in the image, or to _remove_ lines that are apparently present in the image, but stylistically irrelevant.
@@ -36,9 +35,9 @@ Edge detection techniques aim to approach this ideal goal, but are met with some
 ## Types of Edges
 What defines an Edge? A few examples of geometric structures that produce "edges" are:
 
-* Two structures that meet at a sharp angle (surface normal discontinuity)
-* Two structures that are at different distances from the viewer, but appear next to each other in the image (depth discontinuity)
-* A structure that changes color sharply at a point (color discontinuity)
+* Two surfaces that meet at a sharp angle (surface normal discontinuity)
+* Two surfaces that are at different distances from the viewer, but appear next to each other in the image (depth discontinuity)
+* A surface that changes color sharply at a point (color discontinuity)
 * A structure whose surface lighting changes sharply at a point (illumination discontinuity)
 
 <div class="fig figcenter">
@@ -76,12 +75,12 @@ Let there be a function $f(x,y)$, which is two-dimensional and has two parameter
 
 - Given function: $f(x,y)$
 - Gradient vector: $\triangledown f(x,y)=\begin{bmatrix} \frac{\partial f(x,y)}{\partial x} \\ \frac{\partial f(x,y)}{\partial y} \end{bmatrix} =\begin{bmatrix} f_x \\ f_y \end{bmatrix}$
-- Gradient magnitude: $| \triangledown f(x,y) | = \sqrt{f_x^2 + f_y^2}$
+- Gradient magnitude: $|\triangledown f(x,y)| = \sqrt{f_x^2 + f_y^2}$
 - Gradient direction: $\theta=tan^{-1}(\frac{\partial f}{\partial y} / \frac{\partial f}{\partial x})$
 
 We can summarize the derivatives in a gradient vector, where each component is the derivative of the function along one of the dimensions.
 
-Additionally, we can compute how strong the derivative is by computing the gradient vector's magnitude. We can also compute the gradient orientation, which tells us the direction along which the gradient is strongest. 
+Additionally, we can compute how strong the derivative is by computing the gradient vector's magnitude. We can also compute the gradient orientation, which tells us the direction along which the gradient is strongest. If we move in this direction, the rate of change of our function will be higher than if we moved in any other direction.
 
 ## 2D Discrete Derivative Filter
 
@@ -111,19 +110,31 @@ For the middle image, it is notable that the values that are strongest in this p
 We have thus far gained a knowledge of what might characterize an edge, and what techniques we might use to calculate those features. We now outline a simplistic way of drawing out edges in practice.
 
 ## Characterizing Edges
-Let's define an edge as _a sharp change in the local gradient of the image intensity_. Define the "local gradient" at a pixel as the vector:
+Let's define an edge as _a sharp change in the local gradient of the image intensity_. Here is a visualization of what this means. 
+
+<div class="fig figcenter">
+  <img alt="" src="https://imgur.com/a/6T4Lyn4">
+</div>
+
+In the left portion, we see a binary image consisting of black and white pixels. In the middle portion, we see the intensity value of the pixels along the horizontal scanline. In the right portion, we see the derivative of this intensity function taken along this scanline. We can easily see that the edges in the left portion of the image correspond to sharp changes in the derivative function seen in the right portion. While this is a simple example, the intuition remains the same for more complex images. We can generally identify edges through sharp changes in the local gradient.  Now, let us define the "local gradient" at a pixel as the vector:
 
 $[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}]$
 
-We can see that this vector represents the local value of the rate of change of the intensity along both axes. The _direction_ of the gradient is found as:
+We can see that this vector represents the local value of the rate of change of the intensity along both axes as seen in the image below. 
 
-$\theta = \arctan{\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}}$
+<div class="fig figcenter">
+  <img alt="" src="https://imgur.com/a/ETyOXW0">
+</div>
+
+The _direction_ of the gradient is found as:
+
+$\theta = \arctan({\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}})$
 
 The gradient vector always points toward the direction of the fastest change in intensity. This entails that the direction of the gradient is always perpendicular to the direction of the edge. That is to say, for vertical edges the fastest change in intensity occurs in the x-direction and vice versa for horizontal edges.
 
 Finally, the _strength_ of the candidate edge at a point may be expressed as the magnitude of the local gradient (i.e. how fast the intensity changes at the point):
 
-$||\nabla f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$
+$||\triangledown f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$
 
 In review, we might go about this calculation by following this process:
 * Convolve the image with one of the aforementioned x-derivative filters to get a map of the x-gradient
