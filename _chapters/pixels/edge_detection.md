@@ -54,7 +54,7 @@ Image gradients, or derivatives, are tools for us to compute edges in an image. 
 ## Discrete derivative in 1D (Review)
 As a review, derivatives in 1D can be represented as the following:
 
-$\frac{\partial f}{\partial x}=\lim_{\triangle x \to 0} \frac{f(x)-f(x- \triangle x)}{\triangle x} = f'(x) =  f_{x}$
+$$\frac{\partial f}{\partial x}=\lim_{\triangle x \to 0} \frac{f(x)-f(x- \triangle x)}{\triangle x} = f'(x) =  f_{x}$$
 
 However, let's remember that images are discrete functions rather than continuous functions. 
 
@@ -64,19 +64,26 @@ We can approximate a 1D discrete derivative in a few different ways.
 3. Central: $\frac{\partial f}{\partial x} = f(x+1) - f(x-1)=f'(x)$
 
 We can also implement each of these approximations of derivatives as filters with convolutions:
-1. Backward filter: [0 1 -1]
-2. Forward filter: [1 -1 0]
-3. Central filter: [1 0 -1]
+1. Backward filter: $[0 1 -1]$
+2. Forward filter: $[1 -1 0]$
+3. Central filter: $[1 0 -1]$
 
 ## Discrete derivative in 2D
 Images are 2-dimensional discrete functions, so let us understand how to compute such functions.
 
 Let there be a function $f(x,y)$, which is two-dimensional and has two parameters $x$ and $y$. In this case, when we think of derivatives, we are actually thinking about gradients since it is a multivariate function. Therefore, the generalization of derivatives are gradients. 
 
-- Given function: $f(x,y)$
-- Gradient vector: $\triangledown f(x,y)=\begin{bmatrix} \frac{\partial f(x,y)}{\partial x} \\ \frac{\partial f(x,y)}{\partial y} \end{bmatrix} =\begin{bmatrix} f_x \\ f_y \end{bmatrix}$
-- Gradient magnitude: $|\triangledown f(x,y)| = \sqrt{f_x^2 + f_y^2}$
-- Gradient direction: $\theta=tan^{-1}(\frac{\partial f}{\partial y} / \frac{\partial f}{\partial x})$
+Given a function $f(x,y)$, its **Gradient vector** is given by
+
+$$\triangledown f(x,y)=\begin{bmatrix} \frac{\partial f(x,y)}{\partial x} \\ \frac{\partial f(x,y)}{\partial y} \end{bmatrix} =\begin{bmatrix} f_x \\ f_y \end{bmatrix}$$
+
+The **Gradient magnitude** is
+
+$$|\triangledown f(x,y)| = \sqrt{f_x^2 + f_y^2}$$
+
+The **Gradient direction** is
+
+$$\theta=tan^{-1}(\frac{\partial f}{\partial y} / \frac{\partial f}{\partial x})$$
 
 We can summarize the derivatives in a gradient vector, where each component is the derivative of the function along one of the dimensions.
 
@@ -88,7 +95,7 @@ To compute 2D gradients, we need filters.
 
 This filter computes the derivative along the x-direction.
  
-$1/3\begin{bmatrix} 1 & 0 & -1 \\ 1 & 0 & -1 \\ 1 & 0 & -1 \\ \end{bmatrix}$
+$$1/3\begin{bmatrix} 1 & 0 & -1 \\ 1 & 0 & -1 \\ 1 & 0 & -1 \\ \end{bmatrix}$$
 
 
 The following filter would compute the derivative along the columns, so it is computing an approximation along the y-direction. 
@@ -118,7 +125,7 @@ Let's define an edge as _a sharp change in the local gradient of the image inten
 
 In the left portion, we see a binary image consisting of black and white pixels. In the middle portion, we see the intensity value of the pixels along the horizontal scanline. In the right portion, we see the derivative of this intensity function taken along this scanline. We can easily see that the edges in the left portion of the image correspond to sharp changes in the derivative function seen in the right portion. While this is a simple example, the intuition remains the same for more complex images. We can generally identify edges through sharp changes in the local gradient.  Now, let us define the "local gradient" at a pixel as the vector:
 
-$[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}]$
+$$[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}]$$
 
 We can see that this vector represents the local value of the rate of change of the intensity along both axes as seen in the image below. 
 
@@ -128,13 +135,13 @@ We can see that this vector represents the local value of the rate of change of 
 
 The _direction_ of the gradient is found as:
 
-$\theta = \arctan({\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}})$
+$$\theta = \arctan({\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}})$$
 
 The gradient vector always points toward the direction of the fastest change in intensity. This entails that the direction of the gradient is always perpendicular to the direction of the edge. That is to say, for vertical edges the fastest change in intensity occurs in the x-direction and vice versa for horizontal edges.
 
 Finally, the _strength_ of the candidate edge at a point may be expressed as the magnitude of the local gradient (i.e. how fast the intensity changes at the point):
 
-$||\triangledown f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$
+$$||\triangledown f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$$
 
 In review, we might go about this calculation by following this process:
 * Convolve the image with one of the aforementioned x-derivative filters to get a map of the x-gradient
@@ -156,11 +163,11 @@ A significant problem is found when we encounter noisy inputs. Discrete derivati
 
 Knowing that noisy input is the bane of our magnitude of gradients strategy, we first apply a smoothing kernel. Remember the weighted average kernel from a few lectures back?
 
-$1/9\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \\ \end{bmatrix}$
+$$1/9\begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \\ \end{bmatrix}$$
 
 We can also use a slightly more advanced kernel, the gaussian smoothing kernel", which emphasizes the weight of the center pixel itself more than that of its neighbors:
 
-$1/9\begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 2 \\ 1 & 2 & 1 \\ \end{bmatrix}$
+$$1/9\begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 2 \\ 1 & 2 & 1 \\ \end{bmatrix}$$
 
 The updated process would then look like this:
 * First convolve the image with a smoothing filter, THEN:
@@ -318,7 +325,7 @@ The main idea behind Hough Transform is a transformation of edge points from one
 
 Consider an arbitrary edge point (pixel) with coordinates $(x_i, y_i)$. Now, there are infinite number of lines that pass through this point. Each of those lines can be represented with the equation:
 
-$y = ax + b$
+$$y = ax + b$$
 
 where different $(a, b)$ pairs give different lines.
 
@@ -328,19 +335,19 @@ where different $(a, b)$ pairs give different lines.
 
 Since all of these lines pass though the point $(x_i, y_i)$, we can substitute this point into the above equation:
 
-$y_i = ax_i + b$
+$$y_i = ax_i + b$$
 
 This equation represents the family of all lines that pass through the point $(x_i, y_i)$.
 
 Rearranging the terms in the above equation gives us:
 
-$b = -x_ia + y_i$
+$$b = -x_ia + y_i$$
 
 Note that $x_i, y_i$ have fixed values (i.e. they are constants). Now, if we assume that $a, b$ are variables, then the above equation represents the equation of a straight line in the $a, b$ coordinate space (with slope $-x_i$ and y-intercept $y_i$).
 
 Similarly, for every other edge point, $(x_j, y_j)$, we could form a straight line in the $a, b$ coordinate space.
 
-$b = -x_ja + y_j$
+$$b = -x_ja + y_j$$
 
 <div class="fig figcenter">
   <img alt="" src="https://i.imgur.com/ct7igOG.png">
@@ -353,22 +360,28 @@ This is the transformation part of the Hough Transaform - every point $(x, y)$ i
 
 To understand the significance, let us consider two separate straight lines in the $a, b$ space.
 
-$b = -x_ia + y_i$
-$b = -x_ja + y_j$
+\begin{align}
+b &= -x_ia + y_i
+b &= -x_ja + y_j
+\end{align}
 
 Suppose these two lines intersect at the point $(a', b')$. This point must satisfy the above two equations:
 
-$b' = -x_ia' + y_i$
-$b' = -x_ja' + y_j$
+\begin{align}
+b' &= -x_ia' + y_i
+b' &= -x_ja' + y_j
+\end{align}
 
 Rearranging the terms in these two equations gives us:
 
-$y_i = a'x_i + b'$
-$y_j = a'x_j + b'$
+\begin{align}
+y_i = a'x_i + b'
+y_j = a'x_j + b'
+\end{align}
 
 These two equations can be obtained by substituting the points $(x_i, y_i)$ and $(x_j, y_j)$ into the equation
 
-$y = a'x + b'$
+$$y = a'x + b'$$
 
 The equation, $y = a'x + b'$, represents the straight line that passes through two edge points, $(x_i, y_i)$ and $(x_j, y_j)$. In other words, colinear points in the $x, y$ space transform into straight lines in the $a, b$ space that interect at a single point $(a', b')$.
 
@@ -425,7 +438,7 @@ The following image shows the top 20 most voted lines found by HT.
 ## Other Ways to Do Hough Transform
 Instead of $a, b$ coordinate space, we could transform to the polar coordinates $(\rho, \theta)$ space. Then, the $x, y$ space line equation, $y = ax + b$, is transformed into the polar coordinate space as:
 
-$-xcos(\theta) + ysin(\theta) = \rho$
+$$-xcos(\theta) + ysin(\theta) = \rho$$
 
 <div class="fig figcenter">
   <img alt="" src="https://i.imgur.com/n5j3rJ6.png">
