@@ -100,7 +100,7 @@ $$1/3\begin{bmatrix} 1 & 0 & -1 \\ 1 & 0 & -1 \\ 1 & 0 & -1 \\ \end{bmatrix}$$
 
 The following filter would compute the derivative along the columns, so it is computing an approximation along the y-direction. 
 
-$1/3\begin{bmatrix} 1 & 1 & 1 \\ 0 & 0 & 0 \\ -1 & -1 & -1 \\ \end{bmatrix}$
+$$1/3\begin{bmatrix} 1 & 1 & 1 \\ 0 & 0 & 0 \\ -1 & -1 & -1 \\ \end{bmatrix}$$
 ### 3 x 3 Image Gradient Filters
 
 Let's see an example of gradient filters applied to an image.
