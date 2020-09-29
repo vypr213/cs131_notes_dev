@@ -120,7 +120,7 @@ We have thus far gained a knowledge of what might characterize an edge, and what
 Let's define an edge as _a sharp change in the local gradient of the image intensity_. Here is a visualization of what this means. 
 
 <div class="fig figcenter">
-  <img alt="" src="https://imgur.com/a/6T4Lyn4">
+  <img alt="" src="https://i.imgur.com/PuiGC2m.png">
 </div>
 
 In the left portion, we see a binary image consisting of black and white pixels. In the middle portion, we see the intensity value of the pixels along the horizontal scanline. In the right portion, we see the derivative of this intensity function taken along this scanline. We can easily see that the edges in the left portion of the image correspond to sharp changes in the derivative function seen in the right portion. While this is a simple example, the intuition remains the same for more complex images. We can generally identify edges through sharp changes in the local gradient.  Now, let us define the "local gradient" at a pixel as the vector:
@@ -130,7 +130,7 @@ $$[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}]$$
 We can see that this vector represents the local value of the rate of change of the intensity along both axes as seen in the image below. 
 
 <div class="fig figcenter">
-  <img alt="" src="https://imgur.com/a/ETyOXW0">
+  <img alt="" src="https://i.imgur.com/FOFfI1t.png">
 </div>
 
 The _direction_ of the gradient is found as:
