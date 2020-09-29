@@ -360,24 +360,19 @@ This is the transformation part of the Hough Transaform - every point $(x, y)$ i
 
 To understand the significance, let us consider two separate straight lines in the $a, b$ space.
 
-\begin{align}
-b &= -x_ia + y_i
-b &= -x_ja + y_j
-\end{align}
+$$b = -x_ia + y_i$$
+$$b = -x_ja + y_j$$
 
 Suppose these two lines intersect at the point $(a', b')$. This point must satisfy the above two equations:
 
 \begin{align}
-b' &= -x_ia' + y_i
-b' &= -x_ja' + y_j
-\end{align}
+$$b' = -x_ia' + y_i$$
+$$b' = -x_ja' + y_j$$
 
 Rearranging the terms in these two equations gives us:
 
-\begin{align}
-y_i = a'x_i + b'
-y_j = a'x_j + b'
-\end{align}
+$$y_i = a'x_i + b'$$
+$$y_j = a'x_j + b'$$
 
 These two equations can be obtained by substituting the points $(x_i, y_i)$ and $(x_j, y_j)$ into the equation
 
