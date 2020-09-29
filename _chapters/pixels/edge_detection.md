@@ -238,6 +238,9 @@ There are several applications that depend on our ability to detect straight lin
 * Performing quality control in a manufacturing process where we need to ensure alignment of components in, say a circuit board.
 * In order for a delivery robot to navigate a sidewalk, it needs to figure out the boundaries of the sidewalk.
 
+<div class="fig figcenter">
+  <img src="https://i.imgur.com/DGn2SVS.png">
+</div>
 ![](https://i.imgur.com/DGn2SVS.png)
 
 All these examples depend on automatically detecting staight lines in an image.
