@@ -10,7 +10,9 @@ order: 4 # Lecture number for 2020
 
 Edges are important features for image analysis. We can think of edges as significant local changes in an image, which happen at the boundary between two different regions of the image. The use of edge detection in computer vision is inspired by studies in neurobiology that found that the mammalian brain responds especially strongly to the stimuli presented by images of some line configurations.
 
-![Hubel & Wiesel experimental design](https://i.imgur.com/Bnoh8LL.jpg)
+<div class="fig figcenter">
+  <img alt="Hubel & Wiesel experimental design" src="https://i.imgur.com/Bnoh8LL.jpg">
+</div>
 *Hubel & Wiesel, 1960s*
 
 Further studies have revealed that human brains interact similarly with edges. Further, from human perception studies in psychology, we know that not all edges are equally important in terms of communicating meaning; some edges are more significant than others. This sets the foundation for the challenge of edge detection in Computer Vision.
@@ -19,7 +21,9 @@ Further studies have revealed that human brains interact similarly with edges. F
 ## The End Goal
 The goal of edge detection in computer vision is to identify sudden changes (discontinuities) in an image. In general, the ideal functionality of an edge detector is to convert any photo input into a line drawing -- ideally, what a human artist would draw to represent the input. In the case of the human artist, the creation of this drawing requires the use of external knowledge and inference about the depicted object in order to either _add_ lines that are not present in the image, or to _remove_ lines that are apparently present in the image, but stylistically irrelevant.
 
-![Edge detection example](https://www.oreilly.com/library/view/computer-vision-with/9781788299763/assets/78b28e11-449c-4be3-9779-dcf7e3b40ec6.jpg)
+<div class="fig figcenter">
+  <img alt="Edge detection example" src="https://www.oreilly.com/library/view/computer-vision-with/9781788299763/assets/78b28e11-449c-4be3-9779-dcf7e3b40ec6.jpg">
+</div>
 *Image Credit: Computer Vision with Python 3 by Saurabh Kapur*
 
 Notice that in this computer-generated image, there are both missing edges and extra edges that a human artist would not miss / draw.
@@ -37,7 +41,9 @@ What defines an Edge? A few examples of geometric structures that produce "edges
 * A structure that changes color sharply at a point (color discontinuity)
 * A structure whose surface lighting changes sharply at a point (illumination discontinuity)
 
-![Types of discontinuities](https://i.imgur.com/ZYbIZWg.jpg)
+<div class="fig figcenter">
+  <img alt="Types of discontinuities" src="https://i.imgur.com/ZYbIZWg.jpg">
+</div>
 
 A general theme we observe here is that _some kind of sharp discontinuity_ may be a key into identifying which pixels of a given image are parts of edges.
 
@@ -93,7 +99,9 @@ $1/3\begin{bmatrix} 1 & 1 & 1 \\ 0 & 0 & 0 \\ -1 & -1 & -1 \\ \end{bmatrix}$
 
 Let's see an example of gradient filters applied to an image.
 
-![](https://i.imgur.com/8sGNzkb.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/8sGNzkb.png">
+</div>
 
 For the middle image, it is notable that the values that are strongest in this picture are those that have strong changes in the horizontal axis. There is a similar effect applied to the third image in the direction of the vertical axis. 
 
@@ -124,7 +132,9 @@ In review, we might go about this calculation by following this process:
 
 This is almost a functioning edge detector! Poor, but functional.
 
-![](https://i.imgur.com/37wPz65.jpg)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/37wPz65.jpg">
+</div>
 *Source: Lecture 4.3, slide 6*
 
 #### NOTE: Be aware of which direction the axes point; in image processing, the y axis often points down.
@@ -153,7 +163,9 @@ To complete the line detection routine, we can apply a threshold to the magnitud
 
 Using a smoothing filter has side effects, of course; the primary one being that the "resolution" of features, principally edges, in the image will be worsened. It stands to reason that the smoother the image becomes, the wider and blurrier the edges will become. A balance must be maintained concerning the smoothing applied to the input.
 
-![](https://i.imgur.com/knsvGtt.jpg)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/knsvGtt.jpg">
+</div>
 *Source: Lecture 4.3, slide 16*
 
 ## Designing an optimal performance edge detector
@@ -170,18 +182,26 @@ Sobel edge detection involves the use of a special filter named the Sobel filter
 
 ## The Sobel Filters
 We have two 3x3 filters to compute the image gradient in the x and y directions
-![](https://i.imgur.com/VNycv09.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/VNycv09.png">
+</div>
 
 If we look closely, the filter is actually combining a Gaussian blur and a gradient filter
-![](https://i.imgur.com/2RUBklf.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/2RUBklf.png">
+</div>
 The Gaussian smoothing is used to reduce noise in the image, and the differentiation filter is used to compute the gradients in the corresponding direction.
 
 ## Direction and Magnitude
 As we have seen in image differentiation, we can also obtain the magnitude and direction of our gradients via the following
-![](https://i.imgur.com/uEEIL6E.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/uEEIL6E.png">
+</div>
 
 ## Example
-![](https://i.imgur.com/eabtXCA.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/eabtXCA.png">
+</div>
 We convolve $G_x$ and $G_y$ on an input image $F$ to get a gradient image in both directions. 
 
 We combine these two output gradient images together by using our magnitude formula on our convolved outputs and then finally use thresholding (a parameter to determine what value constitutes an edge) to get an edge map of our input image.
@@ -214,7 +234,9 @@ The issue with the gradient magnitude that we have obtained after steps 1 and 2 
 We start from the premise that an edge occurs where the gradient reaches a max value. Our task is to remove spurious responses by comparing the pixel against its neighbors along the direction of the gradient and then removing the pixels that are not the maximum. 
 
 Where $|\nabla G| (x, y)$ is the gradient at pixel $(x, y)$:
-![](https://i.imgur.com/IOk4zKh.jpg)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/IOk4zKh.jpg">
+</div>
 We calculate which of the three pixels along the direction of the gradient (i.e. the direction perpendicular to the edge) is the largest. The value of the other two pixels is then set to 0.
 
 Sometimes, the gradient orientation doesn’t directly point to a neighbour pixel.  In this case, we need to use interpolation among the neighbours to calculate the intensity value before finding the max. 
@@ -239,9 +261,8 @@ There are several applications that depend on our ability to detect straight lin
 * In order for a delivery robot to navigate a sidewalk, it needs to figure out the boundaries of the sidewalk.
 
 <div class="fig figcenter">
-  <img src="https://i.imgur.com/DGn2SVS.png">
+  <img alt="" src="https://i.imgur.com/DGn2SVS.png">
 </div>
-![](https://i.imgur.com/DGn2SVS.png)
 
 All these examples depend on automatically detecting staight lines in an image.
 
@@ -259,7 +280,9 @@ Hough transforms can
 ## What do we need for the Hough Transform?
 Before we could run the **HT** algorithm, we need to create an edge map of the image using any of the edge detection algorithms. The edge map shows the pixels indicating the boundaries of various objects in the image.
 
-![](https://i.imgur.com/KAVnurF.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/KAVnurF.png">
+</div>
 
 **NOTE**: The edge map is essentially a binary image where the boundary pixels have a value of $1$, and all other pixels have a value of $0$.
 
@@ -270,7 +293,9 @@ For every pair of non-zero pixels in the edge map - $(x1, y1)$ and $(x2, y2)$,
 -- If yes, then we found a straight line in the image.
 -- Otherwise, discard the line and continue with the next pair of pixels.
 
-![](https://i.imgur.com/Rsb3wI4.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/Rsb3wI4.png">
+</div>
 
 This algorithm has a complexity of $O(N^2)$, where
 $N$ is the total number of edge pixels in the edge map. We could improve the complexity using Hough Transform.
@@ -286,7 +311,9 @@ $y = ax + b$
 
 where different $(a, b)$ pairs give different lines.
 
-![](https://i.imgur.com/BPjefie.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/BPjefie.png">
+</div>
 
 Since all of these lines pass though the point $(x_i, y_i)$, we can substitute this point into the above equation:
 
@@ -304,7 +331,9 @@ Similarly, for every other edge point, $(x_j, y_j)$, we could form a straight li
 
 $b = -x_ja + y_j$
 
-![](https://i.imgur.com/ct7igOG.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/ct7igOG.png">
+</div>
 
 This is the transformation part of the Hough Transaform - every point $(x, y)$ is transformed into a line in the $a, b$ space.
 
@@ -332,7 +361,9 @@ $y = a'x + b'$
 
 The equation, $y = a'x + b'$, represents the straight line that passes through two edge points, $(x_i, y_i)$ and $(x_j, y_j)$. In other words, colinear points in the $x, y$ space transform into straight lines in the $a, b$ space that interect at a single point $(a', b')$.
 
-![](https://i.imgur.com/9EUEmpO.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/9EUEmpO.png">
+</div>
 
 To recap:
 * Every edge point $(x, y)$ can be transformed (or mapped) to a straight line in the $a, b$ space.
@@ -343,15 +374,21 @@ Hough Transform is supposed to be more efficient than the Naive algorithm, but s
 
 We achieve efficiency by finding the intersection points, $(a', b')$, in the quantized (discrete) $a, b$ space. 
 
-![](https://i.imgur.com/WApeMW4.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/WApeMW4.png">
+</div>
 
 Instead of transforming an edge point, $(x, y)$, into an explicit line in the $a, b$ space, we vote on discrete cells that are activated (i.e. cut through) by the transformed line in the $a, b$ space.
 
-![](https://i.imgur.com/iLcEYlU.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/iLcEYlU.png">
+</div>
 
 We repeat this voting process for all transformed lines corresponding to all the edge points. Note that for any given cell, new votes get added to exisiting value in the cell.
 
-![](https://i.imgur.com/ndprWEm.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/ndprWEm.png">
+</div>
 
 Finally, we select the cells that accumulated more than a certain number of votes. The coordinates of these cells give us the corresponding lines in the $x, y$ space.
 
@@ -370,15 +407,18 @@ Note that we are iterating over the total number of edge points (only once). Als
 
 The following image shows the top 20 most voted lines found by HT.
 
-![](https://i.imgur.com/OdOPmOb.jpg)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/OdOPmOb.jpg">
+</div>
 
 ## Other Ways to Do Hough Transform
 Instead of $a, b$ coordinate space, we could transform to the polar coordinates $(\rho, \theta)$ space. Then, the $x, y$ space line equation, $y = ax + b$, is transformed into the polar coordinate space as:
 
 $-xcos(\theta) + ysin(\theta) = \rho$
 
-![](https://i.imgur.com/MkPMLn6.png)
-![](https://i.imgur.com/n5j3rJ6.png)
+<div class="fig figcenter">
+  <img alt="" src="https://i.imgur.com/n5j3rJ6.png">
+</div>
 
 In this system,
 * Vertical lines have $\theta = 90^o$ and $\rho =$ x-intercept
@@ -400,3 +440,4 @@ In this system,
 * Can be fooled by "apparent lines" i.e. points that appear to be colinear, but are not on true lines.
 * Cannot give the length and position of a line segment.
 * Co-linear line segments cannot be separated.
+
