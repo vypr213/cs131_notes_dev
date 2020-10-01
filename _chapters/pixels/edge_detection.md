@@ -81,12 +81,19 @@ we can compute 1D discrete derivative using Backward approximation using
 $$f'(x_i) = f(x_i) - f(x_i-x_{i-1})$$
 
 $f'(0) = f(0)-f(-1) = 10 - 0 = 10$
+
 $f'(1) = f(1)-f(0) = 15 - 10 = 5$
+
 $f'(2) = f(2)-f(1) = 10 - 15 = -5$
+
 $f'(3) = f(3)-f(2) = 10 - 10 = 0$
+
 $f'(4) = f(4)-f(3) = 25 - 10 = 15$
+
 $f'(5) = f(5)-f(4) = 20 - 25 = -5$
+
 $f'(6) = f(6)-f(5) = 20 - 20 = 0$
+
 $f'(7) = f(7)-f(6) = 20 - 20 = 0$
 
 Therefore,
