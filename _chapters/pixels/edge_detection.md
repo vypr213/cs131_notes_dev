@@ -72,15 +72,26 @@ We can also implement each of these approximations of derivatives as filters wit
 3. Central filter: $\begin{bmatrix}1 & 0 & -1\end{bmatrix}$
 
 **Example**:
-Given a 1D function, $f(x)$, we can compute 1D discrete derivative using Backward approximation as follows:
+Given a 1D function,
 
 $$f(x)  = \begin{bmatrix}10 & 15 & 10 & 10 & 25 & 20 & 20 & 20\end{bmatrix}$$
 
-$\Rightarrow f'(x) = \begin{bmatrix}(10-0) & (15-10) & (10-15) & (10-10) & (25-10) & (20-25) & (20-20) & (20-20)\end{bmatrix}$
+we can compute 1D discrete derivative using Backward approximation using
 
-$$\Rightarrow f'(x)= \begin{bmatrix}10 & 5 & -5 & 0 & 15 & -5 & 0 & 0\end{bmatrix}$$
+$$f'(x_i) = f(x_i) - f(x_i-x_{i-1})$$
 
-Here,\  $f'(x)$ is calculated using backward approximation where \ $f'(x_i) = f(x_i) - f(x_i-x_{i-1})$:
+$f'(0) = f(0)-f(-1) = 10 - 0 = 10$
+$f'(1) = f(1)-f(0) = 15 - 10 = 5$
+$f'(2) = f(2)-f(1) = 10 - 15 = -5$
+$f'(3) = f(3)-f(2) = 10 - 10 = 0$
+$f'(4) = f(4)-f(3) = 25 - 10 = 15$
+$f'(5) = f(5)-f(4) = 20 - 25 = -5$
+$f'(6) = f(6)-f(5) = 20 - 20 = 0$
+$f'(7) = f(7)-f(6) = 20 - 20 = 0$
+
+Therefore,
+
+$$f'(x)= \begin{bmatrix}10 & 5 & -5 & 0 & 15 & -5 & 0 & 0\end{bmatrix}$$
 
 
 ## Discrete derivative in 2D
