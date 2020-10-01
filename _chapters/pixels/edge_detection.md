@@ -46,6 +46,7 @@ What defines an Edge? A few examples of geometric structures that produce "edges
   <img src="../../assets/Lecture_4/discontinuities.jpg">
   <div class="figcaption">Types of discontinuities</div>
 </div>
+*Source: Lecture 4.1, slides 13-16*
 
 A general theme we observe here is that _some kind of sharp discontinuity_ may be a key into identifying which pixels of a given image are parts of edges.
 
@@ -76,9 +77,9 @@ Given a 1D function,
 
 $$f(x)  = \begin{bmatrix}10 & 15 & 10 & 10 & 25 & 20 & 20 & 20\end{bmatrix}$$
 
-we can compute 1D discrete derivative using Backward approximation using
+we can compute 1D discrete derivative using Backward approximation:
 
-$$f'(x_i) = f(x_i) - f(x_i-x_{i-1})$$
+$$f'(x_i) = f(x_i) - f(x_{i-1})$$
 
 $f'(0) = f(0)-f(-1) = 10 - 0 = 10$
 
@@ -142,6 +143,7 @@ Let's see an example of gradient filters applied to an image.
   <img src="../../assets/Lecture_4/grad_filters.png">
   <div class="figcaption">Gradient Filter Examples</div>
 </div>
+*Source: Lecture 4.2, slide 24*
 
 For the middle image, it is notable that the values that are strongest in this picture are those that have strong changes in the horizontal axis. There is a similar effect applied to the third image in the direction of the vertical axis. 
 
@@ -157,6 +159,7 @@ Let's define an edge as _a sharp change in the local gradient of the image inten
   <img src="../../assets/Lecture_4/intensity.png">
   <div class="figcaption">Determining edges with intensity changes</div>
 </div>
+*Source: Lecture 4.3, slide 3*
 
 In the left portion, we see a binary image consisting of black and white pixels. In the middle portion, we see the intensity value of the pixels along the horizontal scanline. In the right portion, we see the derivative of this intensity function taken along this scanline. We can easily see that the edges in the left portion of the image correspond to sharp changes in the derivative function seen in the right portion. While this is a simple example, the intuition remains the same for more complex images. We can generally identify edges through sharp changes in the local gradient.  Now, let us define the "local gradient" at a pixel as the vector:
 
@@ -168,6 +171,7 @@ We can see that this vector represents the local value of the rate of change of 
   <img src="../../assets/Lecture_4/edge_types.png">
   <div class="figcaption">Edges and corresponding gradient vectors</div>
 </div>
+*Source: Lecture 4.3, slide 5*
 
 The _direction_ of the gradient is found as:
 
@@ -246,6 +250,7 @@ If we look closely, the filter is actually combining a Gaussian blur and a gradi
   <img src="../../assets/Lecture_4/filter_decomp.png">
   <div class="figcaption">Filter as vector product</div>
 </div>
+*Source: Lecture 4.4, slide 3*
 The Gaussian smoothing is used to reduce noise in the image, and the differentiation filter is used to compute the gradients in the corresponding direction.
 
 ## Direction and Magnitude
@@ -264,6 +269,7 @@ $$\Theta = \arctan{\left(\frac{G_y}{G_x}\right)}$$
   <img src="../../assets/Lecture_4/sobel.png">
   <div class="figcaption">Sobel Filter example</div>
 </div>
+*Source: Lecture 4.4, slide 5*
 
 We convolve $G_x$ and $G_y$ on an input image $F$ to get a gradient image in both directions. 
 
@@ -297,8 +303,9 @@ $$G_y = \begin{bmatrix} 1 \\ 0 \\ -1 \\\end{bmatrix}\begin{bmatrix} 1 & 2 & 1 \e
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/canny.png">
-  <div class="figcaption">Computing gradients wiht the Derivative of Gaussian filter</div>
+  <div class="figcaption">Computing gradients wiht the derivative of Gaussian filter</div>
 </div>
+*Source: Lecture 4.5, slide 6*
 
 ## Non-maximum suppression
 The issue with the gradient magnitude that we have obtained after steps 1 and 2 is that for every edge, there are multiple pixels.
@@ -308,6 +315,7 @@ The issue with the gradient magnitude that we have obtained after steps 1 and 2 
   <img src="../../assets/Lecture_4/multi_pixels.png">
   <div class="figcaption">Problem with Gradient Magnitude</div>
 </div>
+*Source: Lecture 4.5, slide 8*
 
 Therefore, we need to apply non-maximum suppresion over the gradient magnitude to remove these spurious responses and find a single point for each true edge. 
 
@@ -318,6 +326,7 @@ Where $|\nabla G| (x, y)$ is the gradient at pixel $(x, y)$:
   <img src="../../assets/Lecture_4/non_max_suppress.jpg">
   <div class="figcaption">Non-Max Suppression</div>
 </div>
+*Source: Lecture 4.5, slide 11*
 We calculate which of the three pixels along the direction of the gradient (i.e. the direction perpendicular to the edge) is the largest. The value of the other two pixels is then set to 0.
 
 Sometimes, the gradient orientation doesn’t directly point to a neighbour pixel. In this case, we need to use interpolation among the neighbours to calculate the intensity value before finding the max. 
@@ -326,15 +335,16 @@ Sometimes, the gradient orientation doesn’t directly point to a neighbour pixe
   <img src="../../assets/Lecture_4/non_max_suppress_2.png">
   <div class="figcaption">Interpolation in Non-Max Suppression</div>
 </div>
+*Source: Lecture 4.5, slide 12*
 
 ## Hysteresis thresholding
 Finally, we need to use a threshold to produce the edge pixels. Using a single threshold is not optimal, however, because we may miss edges if we set the threshold too high or low. Hysteresis helps us avoid that!
 
 Our goal is to avoid breaking up edges whose gradient magnitude is close to the threshold. To do so, we define two thresholds: low and high.
 
-If low threshold > gradient magnitude = **not an edge**
-If low threshold < gradient magnitude < high threshold = **weak edge**
-If gradient magnitude > high threshold = **strong edge**
+* If low threshold > gradient magnitude = **not an edge**
+* If low threshold < gradient magnitude < high threshold = **weak edge**
+* If gradient magnitude > high threshold = **strong edge**
 
 Now, we determine which of the weak edges may be a true edge. To do so, we consider the neighbours around the weak edge pixel. We can say it’s a true edge if it’s somehow connected to a strong edge (either directly connected or indirectly connected through other weak edge pixels).
 
@@ -350,6 +360,7 @@ There are several applications that depend on our ability to detect straight lin
   <img src="../../assets/Lecture_4/lines.png">
   <div class="figcaption">Applications of Line Detection</div>
 </div>
+*Source: Lecture 4.6, slide 2*
 
 All these examples depend on automatically detecting staight lines in an image.
 
@@ -371,20 +382,22 @@ Before we could run the **HT** algorithm, we need to create an edge map of the i
   <img src="../../assets/Lecture_4/ht_edge_map.png">
   <div class="figcaption">HT needs an edge map</div>
 </div>
+*Source: Lecture 4.6, slide 4*
 
-**NOTE**: The edge map is essentially a binary image where the boundary pixels have a value of $1$, and all other pixels have a value of $0$.
+**NOTE**: The edge map is essentially a binary image where the boundary pixels have a value of $1$ and all other pixels have a value of $0$.
 
 ## Naive Line Detection Algorithm
 For every pair of non-zero pixels in the edge map - $(x1, y1)$ and $(x2, y2)$,
 - First, compute the equation of the straight line passing through these two points.
 - Then, check if any other pixels satisfy this equation.
--- If yes, then we found a straight line in the image.
--- Otherwise, discard the line and continue with the next pair of pixels.
+  - If yes, then we found a straight line in the image.
+  - Otherwise, discard the line and continue with the next pair of pixels.
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/naive_alg.png">
   <div class="figcaption">Naive Algorithm Example</div>
 </div>
+*Source: Lecture 4.6, slide 5*
 
 This algorithm has a complexity of $O(N^2)$, where
 $N$ is the total number of edge pixels in the edge map. We could improve the complexity using Hough Transform.
@@ -392,7 +405,7 @@ $N$ is the total number of edge pixels in the edge map. We could improve the com
 
 
 ## The Transform Part of the Hough Transform
-The main idea behind Hough Transform is a transformation of edge points from one coordinate space to another. Let us see how this transformation is done, and how it helps us.
+The main idea behind Hough Transform is a transformation of edge points from one coordinate space to another. Let us see how this transformation is done and how it helps us.
 
 Consider an arbitrary edge point (pixel) with coordinates $(x_i, y_i)$. Now, there are infinite number of lines that pass through this point. Each of those lines can be represented with the equation:
 
@@ -415,9 +428,9 @@ Rearranging the terms in the above equation gives us:
 
 $$b = -x_ia + y_i$$
 
-Note that $x_i, y_i$ have fixed values (i.e. they are constants). Now, if we assume that $a, b$ are variables, then the above equation represents the equation of a straight line in the $a, b$ coordinate space (with slope $-x_i$ and y-intercept $y_i$).
+Note that $x_i, y_i$ have fixed values (i.e. they are constants). Now, if we assume that $a, b$ are variables, then the above equation represents the equation of a straight line in the $(a, b)$ coordinate space (with slope $-x_i$ and y-intercept $y_i$).
 
-Similarly, for every other edge point, $(x_j, y_j)$, we could form a straight line in the $a, b$ coordinate space.
+Similarly, for every other edge point, $(x_j, y_j)$, we could form a straight line in the $(a, b)$ coordinate space.
 
 $$b = -x_ja + y_j$$
 
@@ -425,13 +438,14 @@ $$b = -x_ja + y_j$$
   <img src="../../assets/Lecture_4/xy_to_ab.png">
   <div class="figcaption">xy-space to ab-space transformation</div>
 </div>
+*Source: Lecture 4.6, slide 7*
 
-This is the transformation part of the Hough Transaform - every point $(x, y)$ is transformed into a line in the $a, b$ space.
+This is the transformation part of the Hough Transaform - every point $(x, y)$ is transformed into a line in the $(a, b)$ space.
 
 
 ### What is the significance of the straight line in $(a, b)$ space?
 
-To understand the significance, let us consider two separate straight lines in the $a, b$ space.
+To understand the significance, let us consider two separate straight lines in the $(a, b)$ space.
 
 $$b = -x_ia + y_i$$
 
@@ -453,33 +467,36 @@ These two equations can be obtained by substituting the points $(x_i, y_i)$ and 
 
 $$y = a'x + b'$$
 
-The equation, $y = a'x + b'$, represents the straight line that passes through two edge points, $(x_i, y_i)$ and $(x_j, y_j)$. In other words, colinear points in the $x, y$ space transform into straight lines in the $a, b$ space that interect at a single point $(a', b')$.
+The equation, $y = a'x + b'$, represents the straight line that passes through two edge points, $(x_i, y_i)$ and $(x_j, y_j)$. In other words, colinear points in the $(x, y)$ space transform into straight lines in the $(a, b)$ space that interect at a single point $(a', b')$.
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/xy_to_ab_2.png">
   <div class="figcaption">Intersection point in ab-space gives a line in xy-space</div>
 </div>
+*Source: Lecture 4.6, slide 8*
 
 To recap:
-* Every edge point $(x, y)$ can be transformed (or mapped) to a straight line in the $a, b$ space.
-* Finding the point of intersection of two lines in the $a, b$ space gives us the equation of the straight line that passes through two edge points.
+* Every edge point $(x, y)$ can be transformed (or mapped) to a straight line in the $(a, b)$ space.
+* Finding the point of intersection of two lines in the $(a, b)$ space gives us the equation of the straight line that passes through two edge points.
 
 ### But we have a problem...
 Hough Transform is supposed to be more efficient than the Naive algorithm, but so far the transformation does not help us to be more efficient.
 
-We achieve efficiency by finding the intersection points, $(a', b')$, in the quantized (discretize) $a, b$ space. 
+We achieve efficiency by finding the intersection points, $(a', b')$, in the quantized (discretize) $(a, b)$ space. 
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/ab_quantized.png">
   <div class="figcaption">Quantizing ab-space</div>
 </div>
+*Source: Lecture 4.6, slide 10*
 
-Instead of transforming an edge point, $(x, y)$, into an explicit line in the $a, b$ space, we vote on discrete cells that are activated (i.e. cut through) by the transformed line in the $a, b$ space.
+Instead of transforming an edge point, $(x, y)$, into an explicit line in the $(a, b)$ space, we vote on discrete cells that are activated (i.e. cut through) by the transformed line in the $(a, b)$ space.
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/ab_quantized_2.png">
   <div class="figcaption">Voting on discrete cells</div>
 </div>
+*Source: Lecture 4.6, slide 11*
 
 We repeat this voting process for all transformed lines corresponding to all the edge points. Note that for any given cell, new votes get added to exisiting value in the cell.
 
@@ -487,8 +504,9 @@ We repeat this voting process for all transformed lines corresponding to all the
   <img src="../../assets/Lecture_4/ab_quantized_3.png">
   <div class="figcaption">More Voting on discrete cells</div>
 </div>
+*Source: Lecture 4.6, slide 12*
 
-Finally, we select the cells that accumulated more than a certain number of votes. The coordinates of these cells give us the corresponding lines in the $x, y$ space.
+Finally, we select the cells that accumulated more than a certain number of votes. The coordinates of these cells give us the corresponding lines in the $(x, y)$ space.
 
 
 ## Hough Transform Algorithm
@@ -509,9 +527,10 @@ The following image shows the top 20 most voted lines found by HT.
   <img src="../../assets/Lecture_4/ht_example.png">
   <div class="figcaption">Hough Transform Example</div>
 </div>
+*Source: Lecture 4.6, slide 14*
 
 ## Other Ways to Do Hough Transform
-Instead of $a, b$ coordinate space, we could transform to the polar coordinates $(\rho, \theta)$ space. Then, the $x, y$ space line equation, $y = ax + b$, is transformed into the polar coordinate space as:
+Instead of $(a, b)$ coordinate space, we could transform to the polar coordinates $(\rho, \theta)$ space. Then, the $(x, y)$ space line equation, $y = ax + b$, is transformed into the polar coordinate space as:
 
 $$-xcos(\theta) + ysin(\theta) = \rho$$
 
@@ -519,12 +538,15 @@ $$-xcos(\theta) + ysin(\theta) = \rho$$
   <img src="../../assets/Lecture_4/polar.png">
   <div class="figcaption">Transforming to Polar Coordinate Space</div>
 </div>
+*Source: Lecture 4.6, slide 15*
 
 In this system,
 * Vertical lines have $\theta = 90^o$ and $\rho =$ x-intercept
-* Horizontal lines have $theta = 0^o$ and $\rho =$ y-intercept.
+* Horizontal lines have $\theta = 0^o$ and $\rho =$ y-intercept.
 
-**NOTE**: $-xcos(\theta) + ysin(\theta) = \rho$ does not represent a straight line the $\rho, \theta$ space as shown in the image below. However, we could still do the Hough Transform using the same strategy as described above.
+**NOTE 1**: $-xcos(\theta) + ysin(\theta) = \rho$ does not represent a straight line in the $(\rho, \theta)$ space as shown in the image below. However, we could still do the Hough Transform using the same strategy as described above.
+
+**NOTE 2**: See [How Hough Transform works](https://www.youtube.com/watch?v=4zHbI-fFIlI&feature=youtu.be&t=3m35s) for a demo of this method.
 
 ## Pros and Cons of the Hough Transform
 
