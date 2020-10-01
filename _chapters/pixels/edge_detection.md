@@ -57,7 +57,7 @@ Image gradients, or derivatives, are tools for us to compute edges in an image. 
 ## Discrete derivative in 1D (Review)
 As a review, derivatives in 1D can be represented as the following:
 
-$$\frac{\partial f}{\partial x}=\lim_{\triangle x \to 0} \frac{f(x)-f(x- \triangle x)}{\triangle x} = f'(x) =  f_{x}$$
+$$\frac{\partial f}{\partial x}=\lim_{\Delta x \to 0} \frac{f(x)-f(x- \Delta x)}{\Delta x} = f'(x) =  f_{x}$$
 
 However, let's remember that images are discrete functions rather than continuous functions. 
 
@@ -71,6 +71,18 @@ We can also implement each of these approximations of derivatives as filters wit
 2. Forward filter: $\begin{bmatrix}1 & -1 & 0\end{bmatrix}$
 3. Central filter: $\begin{bmatrix}1 & 0 & -1\end{bmatrix}$
 
+**Example**:
+Given a 1D function, $f(x)$, we can compute 1D discrete derivative using Backward approximation as follows:
+
+\begin{align}
+f(x)  &= \begin{bmatrix}10 & 15 & 10 & 10 & 25 & 20 & 20 & 20\end{bmatrix}\\
+\Rightarrow f'(x)&= \begin{bmatrix}10 & 5 & -5 & 0 & 15 & -5 & 0 & 0\end{bmatrix}
+\end{align}
+
+Here, $f'(x)$ is calculated using backward approximation where $f'(x_i) = f(x_i) - f(x_i-x_{i-1})$:
+
+$$f'(x) = \begin{bmatrix}(10-0) & (15-10) & (10-15) & (10-10) & (25-10) & (20-25) & (20-20) & (20-20)\end{bmatrix}$$
+
 ## Discrete derivative in 2D
 Images are 2-dimensional discrete functions, so let us understand how to compute such functions.
 
@@ -78,15 +90,15 @@ Let there be a function $f(x,y)$, which is two-dimensional and has two parameter
 
 Given a function $f(x,y)$, its **Gradient vector** is given by
 
-$$\triangledown f(x,y)=\begin{bmatrix} \frac{\partial f(x,y)}{\partial x} \\ \frac{\partial f(x,y)}{\partial y} \end{bmatrix} =\begin{bmatrix} f_x \\ f_y \end{bmatrix}$$
+$$\nabla f(x,y)=\begin{bmatrix} \frac{\partial f(x,y)}{\partial x} \\ \frac{\partial f(x,y)}{\partial y} \end{bmatrix} =\begin{bmatrix} f_x \\ f_y \end{bmatrix}$$
 
 The **Gradient magnitude** is
 
-$$|\triangledown f(x,y)| = \sqrt{f_x^2 + f_y^2}$$
+$$|\nabla f(x,y)| = \sqrt{f_x^2 + f_y^2}$$
 
 The **Gradient direction** is
 
-$$\theta=tan^{-1}(\frac{\partial f}{\partial y} / \frac{\partial f}{\partial x})$$
+$$\Theta = \tan^{-1}{\left(\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}\right)}$$
 
 We can summarize the derivatives in a gradient vector, where each component is the derivative of the function along one of the dimensions.
 
@@ -130,7 +142,7 @@ Let's define an edge as _a sharp change in the local gradient of the image inten
 
 In the left portion, we see a binary image consisting of black and white pixels. In the middle portion, we see the intensity value of the pixels along the horizontal scanline. In the right portion, we see the derivative of this intensity function taken along this scanline. We can easily see that the edges in the left portion of the image correspond to sharp changes in the derivative function seen in the right portion. While this is a simple example, the intuition remains the same for more complex images. We can generally identify edges through sharp changes in the local gradient.  Now, let us define the "local gradient" at a pixel as the vector:
 
-$$[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}]$$
+$$\left[\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}\right]$$
 
 We can see that this vector represents the local value of the rate of change of the intensity along both axes as seen in the image below. 
 
@@ -141,13 +153,13 @@ We can see that this vector represents the local value of the rate of change of 
 
 The _direction_ of the gradient is found as:
 
-$$\theta = \arctan({\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}})$$
+$$\Theta = \arctan{\left(\frac{\frac{\partial f}{\partial y}}{\frac{\partial f}{\partial x}}\right)}$$
 
 The gradient vector always points toward the direction of the fastest change in intensity. This entails that the direction of the gradient is always perpendicular to the direction of the edge. That is to say, for vertical edges the fastest change in intensity occurs in the x-direction and vice versa for horizontal edges.
 
 Finally, the _strength_ of the candidate edge at a point may be expressed as the magnitude of the local gradient (i.e. how fast the intensity changes at the point):
 
-$$||\triangledown f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$$
+$$||\nabla f|| = \sqrt{\frac{\partial f}{\partial x}^2 + \frac{\partial f}{\partial y}^2}$$
 
 In review, we might go about this calculation by following this process:
 * Convolve the image with one of the aforementioned x-derivative filters to get a map of the x-gradient
@@ -222,6 +234,7 @@ The Gaussian smoothing is used to reduce noise in the image, and the differentia
 As we have seen in image differentiation, we can also obtain the magnitude and direction of our gradients via the following
 
 **Magnitude**:
+
 $$ G = \sqrt{G_x^2 + G_y^2}$$
 
 **Angle or direction of the gradient**:
@@ -292,7 +305,7 @@ We calculate which of the three pixels along the direction of the gradient (i.e.
 Sometimes, the gradient orientation doesn’t directly point to a neighbour pixel. In this case, we need to use interpolation among the neighbours to calculate the intensity value before finding the max. 
 
 <div class="fig figcenter fighighlight">
-  <img src="../../assets/Lecture_4/non_max_suppress_2.jpg">
+  <img src="../../assets/Lecture_4/non_max_suppress_2.png">
   <div class="figcaption">Interpolation in Non-Max Suppression</div>
 </div>
 
@@ -371,7 +384,7 @@ where different $(a, b)$ pairs give different lines.
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/xy_space.png">
-  <div class="figcaption">Infinite line pass through a single point</div>
+  <div class="figcaption">Infinite lines pass through a single point</div>
 </div>
 
 Since all of these lines pass though the point $(x_i, y_i)$, we can substitute this point into the above equation:
@@ -454,7 +467,7 @@ We repeat this voting process for all transformed lines corresponding to all the
 
 <div class="fig figcenter fighighlight">
   <img src="../../assets/Lecture_4/ab_quantized_3.png">
-  <div class="figcaption">Repeat voting on discrete cells</div>
+  <div class="figcaption">More Voting on discrete cells</div>
 </div>
 
 Finally, we select the cells that accumulated more than a certain number of votes. The coordinates of these cells give us the corresponding lines in the $x, y$ space.
