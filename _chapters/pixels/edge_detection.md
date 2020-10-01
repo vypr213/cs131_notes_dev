@@ -67,9 +67,9 @@ We can approximate a 1D discrete derivative in a few different ways.
 3. Central: $\frac{\partial f}{\partial x} = f(x+1) - f(x-1)=f'(x)$
 
 We can also implement each of these approximations of derivatives as filters with convolutions:
-1. Backward filter: $[0 1 -1]$
-2. Forward filter: $[1 -1 0]$
-3. Central filter: $[1 0 -1]$
+1. Backward filter: $\begin{bmatrix}0 & 1 & -1\end{bmatrix}$
+2. Forward filter: $\begin{bmatrix}1 & -1 & 0\end{bmatrix}$
+3. Central filter: $\begin{bmatrix}1 & 0 & -1\end{bmatrix}$
 
 ## Discrete derivative in 2D
 Images are 2-dimensional discrete functions, so let us understand how to compute such functions.
