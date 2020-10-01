@@ -74,14 +74,12 @@ We can also implement each of these approximations of derivatives as filters wit
 **Example**:
 Given a 1D function, $f(x)$, we can compute 1D discrete derivative using Backward approximation as follows:
 
-\begin{align}
-f(x)  &= \begin{bmatrix}10 & 15 & 10 & 10 & 25 & 20 & 20 & 20\end{bmatrix}\\
-\Rightarrow f'(x)&= \begin{bmatrix}10 & 5 & -5 & 0 & 15 & -5 & 0 & 0\end{bmatrix}
-\end{align}
+$$f(x)  = \begin{bmatrix}10 & 15 & 10 & 10 & 25 & 20 & 20 & 20\end{bmatrix} \\
+f'(x)= \begin{bmatrix}10 & 5 & -5 & 0 & 15 & -5 & 0 & 0\end{bmatrix}$$
 
 Here, $f'(x)$ is calculated using backward approximation where $f'(x_i) = f(x_i) - f(x_i-x_{i-1})$:
 
-$$f'(x) = \begin{bmatrix}(10-0) & (15-10) & (10-15) & (10-10) & (25-10) & (20-25) & (20-20) & (20-20)\end{bmatrix}$$
+$f'(x) = \begin{bmatrix}(10-0) & (15-10) & (10-15) & (10-10) & (25-10) & (20-25) & (20-20) & (20-20)\end{bmatrix}$
 
 ## Discrete derivative in 2D
 Images are 2-dimensional discrete functions, so let us understand how to compute such functions.
